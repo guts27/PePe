@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.example.pepe_project"
+        applicationId "com.example.pepe"
         minSdkVersion 25
         targetSdkVersion 30
         versionCode 1
@@ -43,5 +43,4 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.4'
     //gson은 json을 자바 클래스로 바꿔주는 역할
     */
-
 }

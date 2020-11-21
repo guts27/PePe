@@ -10,28 +10,31 @@
         android:id="@+id/button_recognition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="98dp"
+        android:layout_marginBottom="80dp"
         android:text="인식"
-        app:layout_constraintBottom_toTopOf="@+id/button_basket"
+        app:layout_constraintBottom_toTopOf="@+id/button_easytouch"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button_basket"
+        android:id="@+id/button_easytouch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="장바구니"
+        android:text="이지터치"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/button_recognition"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.371" />
 
     <Button
-        android:id="@+id/button_lookup"
+        android:id="@+id/button_convenience"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="99dp"
-        android:text="잔액조회"
-        app:layout_constraintStart_toStartOf="@+id/button_basket"
-        app:layout_constraintTop_toBottomOf="@+id/button_basket" />
+        android:layout_marginTop="88dp"
+        android:text="사용자편의기능"
+        app:layout_constraintStart_toStartOf="@+id/button_easytouch"
+        app:layout_constraintTop_toBottomOf="@+id/button_easytouch" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

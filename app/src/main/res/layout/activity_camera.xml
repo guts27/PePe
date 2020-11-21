@@ -6,35 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <Button
         android:id="@+id/camera_on_button"
-        android:layout_width="410dp"
-        android:layout_height="214dp"
-        android:backgroundTint="#F80202"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="사진촬영"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="284dp" />
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="632dp"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/iv_photo"
-        android:layout_width="258dp"
-        android:layout_height="211dp"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="101dp"
         tools:srcCompat="@tools:sample/avatars" />
+
 
     <Button
         android:id="@+id/testbutton"
-        android:layout_width="410dp"
-        android:layout_height="205dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="#0026F8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="274dp"
         android:text="tests"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 
