@@ -5,38 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTextPhone"
+    <Button
+        android:id="@+id/button_minus2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="21dp"
-        android:ems="10"
-        android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/button_phnstr"
-        app:layout_constraintStart_toStartOf="@+id/button_phnstr" />
-
-    <TextView
-        android:id="@+id/textView_volume"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="79dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="79dp"
-        android:text="70"
-        app:layout_constraintBottom_toBottomOf="@+id/button_volstr"
-        app:layout_constraintEnd_toStartOf="@+id/button_plus"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_phnstr"
-        app:layout_constraintVertical_bias="0.643" />
+        android:layout_marginEnd="34dp"
+        android:text="Button"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_plus2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_plus2" />
 
     <Button
         android:id="@+id/button_plus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="6dp"
         android:text="+"
         app:layout_constraintEnd_toStartOf="@+id/button_minus"
         app:layout_constraintStart_toEndOf="@+id/textView_volume"
@@ -46,30 +29,86 @@
         android:id="@+id/button_phnstr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="181dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="143dp"
         android:text="저장"
-        app:layout_constraintEnd_toEndOf="@+id/textView_volume"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_volstr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="164dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="저장"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_plus" />
+        app:layout_constraintStart_toStartOf="@+id/textView_volume"
+        app:layout_constraintTop_toBottomOf="@+id/textView_volume" />
 
     <Button
         android:id="@+id/button_minus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
+        android:layout_marginEnd="48dp"
         android:text="-"
         app:layout_constraintBaseline_toBaselineOf="@+id/button_plus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_plus" />
+
+    <TextView
+        android:id="@+id/textView_speed"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="57dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/button_spestr"
+        app:layout_constraintEnd_toStartOf="@+id/button_plus2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_plus2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="28dp"
+        android:text="Button"
+        app:layout_constraintEnd_toStartOf="@+id/button_minus2"
+        app:layout_constraintStart_toEndOf="@+id/textView_speed"
+        app:layout_constraintTop_toTopOf="@+id/textView_speed" />
+
+    <Button
+        android:id="@+id/button_spestr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="97dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView_speed"
+        app:layout_constraintStart_toStartOf="@+id/textView_speed" />
+
+    <TextView
+        android:id="@+id/textView_volume"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="53dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="15dp"
+        android:text="70"
+        app:layout_constraintEnd_toStartOf="@+id/button_plus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_phnstr" />
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:inputType="phone"
+        app:layout_constraintBottom_toTopOf="@+id/button_phnstr"
+        app:layout_constraintStart_toStartOf="@+id/button_phnstr" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

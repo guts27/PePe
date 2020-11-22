@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
     final static int TAKE_PICTURE = 1;
     final private static String TAG = "PEPE";
     Context context;
-    Float VolumeNo;
+    Float VolumeNo,Speed;
     Integer count = -1;
     //다른 Activity에서 접근할 변수 선언
     public static Context context_main; // context 변수 선언
@@ -58,8 +59,13 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-       context = getApplicationContext();
+        context = getApplicationContext();
+
+        final Vibrator vibrator = (Vibrator)getSystemService(context.VIBRATOR_SERVICE);
+
         VolumeNo = PreferenceManager.getFloat(context,"Volume");
+        Speed = PreferenceManager.getFloat(context, "Speed");
+
 
         tts = new TextToSpeech(CameraActivity.this, new TextToSpeech.OnInitListener() {
             @Override
@@ -68,7 +74,7 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
                     // 언어를 선택한다.
                     tts.setLanguage(Locale.KOREAN);
                     tts.setSpeechRate(1.0f);
-                    tts.speak("사진을 촬영한 후 저장해 주세요.저장한 후 볼륨 높임 버튼을 누르면 재촬영을 볼륨 낮춤 버튼을 누르면 상품정보를 알려드립니다.",TextToSpeech.QUEUE_FLUSH,null);
+                    tts.speak("사진을 촬영한 후 저장해 주세요. 볼륨 높임 버튼을 누르면 재촬영을 볼륨 낮춤 버튼을 누르면 상품정보를 알려드립니다.",TextToSpeech.QUEUE_FLUSH,null);
                     //        tts.speak("상품을 촬영해주세요",TextToSpeech.QUEUE_FLUSH,null);
                     //이걸 사용하면 말하고, QUEUE_FLUSH는 말하는 도중 다른 음성메세지가 시작되면 끊고 말하는 옵션임
                 }
@@ -89,6 +95,9 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
         test.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+
+                long[] pattern = {0,700,200,700};
+                vibrator.vibrate(pattern, -1);
 
                 Intent intent_recognition = new Intent(CameraActivity.this, ImageAnalysisActivity.class);
 
@@ -111,6 +120,7 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.camera_on_button:
+                        vibrator.vibrate(1000);
                         dispatchTakePictureIntent();
                         break;
                 }
@@ -228,6 +238,8 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
     protected void onResume() {
         super.onResume();
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
+        Speed = PreferenceManager.getFloat(context, "Speed");
+
         Log.d("resume", String.valueOf(VolumeNo));
     }
     ///////////////

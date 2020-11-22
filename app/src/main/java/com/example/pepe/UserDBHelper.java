@@ -27,12 +27,13 @@ public class UserDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    void insertRecord(String phoneno, String volume) {
+    void insertRecord(String phoneno, String volume, String speed) {
         SQLiteDatabase db = getReadableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(UserInfo.UserInfoEntry.COLUMN_PhoneNo, phoneno);
         values.put(UserInfo.UserInfoEntry.COLUMN_Volume, volume);
+        values.put(UserInfo.UserInfoEntry.COLUMN_Speed, speed);
 
         db.insert(UserInfo.UserInfoEntry.TABLE_NAME, null, values);
     }
@@ -42,10 +43,11 @@ public class UserDBHelper extends SQLiteOpenHelper {
         String[] projection = {
                 BaseColumns._ID,
                 UserInfo.UserInfoEntry.COLUMN_PhoneNo,
-                UserInfo.UserInfoEntry.COLUMN_Volume
+                UserInfo.UserInfoEntry.COLUMN_Volume,
+                UserInfo.UserInfoEntry.COLUMN_Speed
         };
 
-        String sortOrder = UserInfo.UserInfoEntry.COLUMN_Volume + " DESC";
+       String sortOrder = UserInfo.UserInfoEntry.COLUMN_Speed + " DESC";
 
         Cursor cursor = db.query(
                 UserInfo.UserInfoEntry.TABLE_NAME,   // The table to query
@@ -54,7 +56,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
                 null,   // where 문에 필요한 value
                 null,   // group by를 적용할 column
                 null,   // having 절
-                sortOrder   // 정렬 방식
+                sortOrder
         );
 
         return cursor;

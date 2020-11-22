@@ -1,12 +1,12 @@
 package com.example.pepe.UserConveinience;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pepe.GpsTracker;
 import com.example.pepe.PreferenceManager;
 import com.example.pepe.R;
 import com.example.pepe.UserDBHelper;
@@ -35,13 +34,18 @@ public class SettingActivity extends AppCompatActivity {
     Intent intent_setting;
     SQLiteDatabase db;
     Context context;
+    Float Speed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
         final Context context = getApplicationContext();
+
+        final Vibrator vibrator = (Vibrator)getSystemService(context.VIBRATOR_SERVICE);
+
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
+        Speed = PreferenceManager.getFloat(context, "Speed");
 
         intent_setting = new Intent(SettingActivity.this, SettingActivity.class);
 
@@ -51,7 +55,7 @@ public class SettingActivity extends AppCompatActivity {
                 if (status != TextToSpeech.ERROR) {
                     // 언어를 선택한다.
                     tts.setLanguage(Locale.KOREAN);
-                    tts.setSpeechRate(0.7f);
+                    tts.setSpeechRate(Speed);
                 }
             }
         });
@@ -63,19 +67,25 @@ public class SettingActivity extends AppCompatActivity {
         Cursor cursor = dbHelper.readRecord();
         while (cursor.moveToNext()) {
             Log.d("dfdfdfdfdf001", String.valueOf(cursor.getCount()));
-            String tmp1 = cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_PhoneNo));
-            String tmp2 = cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_Volume));
-            result += tmp1 + "/" + tmp2;
+            result = cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_PhoneNo))+"/";
+            result = result + cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_Volume))+"/";
+            result = result + cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_Speed));
             }
+        Log.d("ghhh", result);
             String[] result2 = result.split("/");
 
         final EditText phone = (EditText)findViewById(R.id.editTextPhone);
         final TextView volume = (TextView)findViewById(R.id.textView_volume);
         volume.setText(result2[1]);
+        final TextView speed = (TextView)findViewById(R.id.textView_speed);
+        speed.setText(result2[2]);
         Button phnstr = (Button)findViewById(R.id.button_phnstr);
         Button plus = (Button)findViewById(R.id.button_plus);
         Button minus = (Button)findViewById(R.id.button_minus);
         Button volstr = (Button)findViewById(R.id.button_volstr);
+        Button plus2 = (Button)findViewById(R.id.button_plus2);
+        Button minus2 = (Button)findViewById(R.id.button_minus2);
+        Button spestr = (Button)findViewById(R.id.button_spestr);
 
         phnstr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +95,7 @@ public class SettingActivity extends AppCompatActivity {
                 if(temp!= null){
                     if(temp.length() == 11){
                         db.execSQL("update UserInfo set phone = "+"'"+temp+"'");
+                        vibrator.vibrate(1000);
                         tts.speak("저장되었습니다.", TextToSpeech.QUEUE_FLUSH, null);
                         Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG);
                     }else{
@@ -128,13 +139,54 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String temp = volume.getText().toString();
                 db.execSQL("update UserInfo set volume = "+"'"+temp+"'");
-                Log.d("fdssgsdgsd",temp);
+                long[] pattern = {0,700,200,700};
+                vibrator.vibrate(pattern, -1);
                 tts.speak("저장되었습니다.", TextToSpeech.QUEUE_FLUSH, null);
                 temp = "0." + temp;
                 PreferenceManager.setFloat(context,"Volume", Float.parseFloat(temp));
                 Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG);
             }
         });
+
+
+    plus2.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            double speNum = Float.valueOf(speed.getText().toString());
+            Log.d("00", String.valueOf(speNum));
+            if(speNum < 2.0){
+                speNum = speNum + 0.1f;
+                String tmp = String.format("%.1f", speNum);
+                speed.setText(tmp);
+            }
+        }
+    });
+
+        minus2.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            double speNum = Float.valueOf(speed.getText().toString());
+            Log.d("00", String.valueOf(speNum));
+            if(speNum > 0.5){
+                speNum = speNum - 0.1f;
+                String tmp = String.format("%.1f", speNum);
+                speed.setText(tmp);
+            }
+        }
+    });
+
+        spestr.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String temp = speed.getText().toString();
+            db.execSQL("update UserInfo set speed = "+"'"+temp+"'");
+            long[] pattern = {0,700,200,700,200,700};
+            vibrator.vibrate(pattern, -1);
+            tts.speak("저장되었습니다.", TextToSpeech.QUEUE_FLUSH, null);
+            PreferenceManager.setFloat(context,"Speed", Float.parseFloat(temp));
+            Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG);
+        }
+    });
 
     }
     @Override

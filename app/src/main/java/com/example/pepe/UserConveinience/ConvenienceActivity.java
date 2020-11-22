@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -48,7 +49,7 @@ public class ConvenienceActivity extends AppCompatActivity {
     private UserDBHelper dbHelper;
 
     TextToSpeech tts;
-    Float VolumeNo;
+    Float VolumeNo, Speed;
     Intent intent_setting;
     Integer count = 0;
     String phoneno = "";
@@ -67,8 +68,12 @@ public class ConvenienceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_convenience);
 
         context = getApplicationContext();
+
+        final Vibrator vibrator = (Vibrator)getSystemService(context.VIBRATOR_SERVICE);
+
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
-        Log.d("000111", String.valueOf(VolumeNo));
+        Speed = PreferenceManager.getFloat(context,"Speed");
+
         intent_setting = new Intent(ConvenienceActivity.this, SettingActivity.class);
 
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -77,7 +82,7 @@ public class ConvenienceActivity extends AppCompatActivity {
                 if (status != TextToSpeech.ERROR) {
                     // 언어를 선택한다.
                     tts.setLanguage(Locale.KOREAN);
-                    tts.setSpeechRate(0.7f);
+                    tts.setSpeechRate(Speed);
                     tts.speak("볼륨 높임 버튼을 누르면 어떠한 기능이 있는지 알 수 있습니다. 원하는 기능을 선택하신 후 볼륨 낮춤 버튼을 누르면 기능이 선택됩니다. 화면의 하단부를 꾹 누르면 홈화면으로 돌아갑니다.", TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
@@ -87,6 +92,8 @@ public class ConvenienceActivity extends AppCompatActivity {
         button_gpsmms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                vibrator.vibrate(1000);
+                tts.speak("위치보내기", TextToSpeech.QUEUE_FLUSH, null);
                 gpsmms();
             }
         });
@@ -95,6 +102,9 @@ public class ConvenienceActivity extends AppCompatActivity {
         button_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long[] pattern = {0,700,200,700};
+                vibrator.vibrate(pattern, -1);
+                tts.speak("도우미 호출", TextToSpeech.QUEUE_FLUSH, null);
                 callhelper();
             }
         });
@@ -103,6 +113,9 @@ public class ConvenienceActivity extends AppCompatActivity {
         button_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long[] pattern = {0,700,200,700,200,700};
+                vibrator.vibrate(pattern, -1);
+                tts.speak("이동", TextToSpeech.QUEUE_FLUSH, null);
                 startActivity(intent_setting);
             }
         });
@@ -473,7 +486,9 @@ public class ConvenienceActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
-        Log.d("resume", String.valueOf(VolumeNo));
+        Speed = PreferenceManager.getFloat(context, "Speed");
+
+        Log.d("resume", String.valueOf(Speed));
     }
     ///////////////
 }
