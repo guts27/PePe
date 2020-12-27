@@ -1,42 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F1C333"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView_analy"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="59dp"
-        android:layout_marginEnd="46dp"
-        android:layout_marginBottom="31dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/button_recam"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_weight="6"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_recam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/button_easy"
-        app:layout_constraintStart_toStartOf="@+id/button_easy"
-        app:layout_constraintTop_toBottomOf="@+id/textView_analy" />
+        <TextView
+            android:id="@+id/textView_analy"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="19dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="5"
+            android:fontFamily="@font/jalnan"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="outsideInset"
+            android:textSize="40dp"></TextView>
 
-    <Button
-        android:id="@+id/button_easy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="29dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_recam" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="3.1"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_easytouch2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1.8"
+            android:background="@drawable/image_easytouch" />
+
+        <Button
+            android:id="@+id/button_b_home2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.8"
+            android:layout_gravity="center"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/image_b_home"/>
+
+    </LinearLayout>
+
+</LinearLayout>

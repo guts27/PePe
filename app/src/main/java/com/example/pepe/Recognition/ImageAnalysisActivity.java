@@ -3,13 +3,18 @@ package com.example.pepe.Recognition;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Vibrator;
 import android.speech.RecognitionListener;
 import android.speech.tts.TextToSpeech;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pepe.HomeActivity;
 import com.example.pepe.PreferenceManager;
 import com.example.pepe.R;
 import com.example.pepe.Recognition.CameraActivity;
@@ -29,6 +35,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,9 +52,11 @@ public class ImageAnalysisActivity extends AppCompatActivity {
     TextToSpeech tts;
     Float VolumeNo,Speed;
     TextView view_result;
-
+    Context context;
+    Vibrator vibrator;
     //이미지 분석에 사용할 가장 최근에 촬영한 사진의 이름
-    public String targetPhoto = ((CameraActivity)CameraActivity.context_main).mCurrentPhotoPath;
+    //public String targetPhoto = ((CameraActivity)CameraActivity.context_main).mCurrentPhotoPath;
+    public String targetPhoto;
 
 
     @Override
@@ -55,19 +64,12 @@ public class ImageAnalysisActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imageanalysis);
         Intent intent = getIntent();
-        String imgs = intent.getStringExtra("img");
-
+        String imgs = intent.getStringExtra("imgssss");
+        targetPhoto = intent.getStringExtra("imgssss");
         Bitmap srcBmp = BitmapFactory.decodeFile(imgs);
 
-        if(String.valueOf(srcBmp) == null){
-            Intent error = new Intent(ImageAnalysisActivity.this, CameraActivity.class);
-            startActivity(error);
-            tts.speak("저장된 사진이 없습니다. 앱을 다시 시작해주세요", TextToSpeech.QUEUE_FLUSH, null);
-        ImageAnalysisActivity.this.finish();
-        }
-
-        Context context = getApplicationContext();
-        final Vibrator vibrator = (Vibrator)getSystemService(context.VIBRATOR_SERVICE);
+        context = getApplicationContext();
+        vibrator = (Vibrator)getSystemService(context.VIBRATOR_SERVICE);
 
         VolumeNo = PreferenceManager.getFloat(context,"Volume");
         Speed = PreferenceManager.getFloat(context, "Speed");
@@ -84,33 +86,29 @@ public class ImageAnalysisActivity extends AppCompatActivity {
         });
 
         view_result = (TextView)findViewById(R.id.textView_analy);
-        Button recam = (Button)findViewById(R.id.button_recam);
-        Button easy = (Button)findViewById(R.id.button_easy);
+        view_result.setMovementMethod(new ScrollingMovementMethod());
 
-        recam.setOnClickListener(new View.OnClickListener() {
+        Button easytouch = (Button)findViewById(R.id.button_easytouch2);
+        easytouch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vibrator.vibrate(1000);
-                Intent intent_recog = new Intent(ImageAnalysisActivity.this, CameraActivity.class);
-                startActivity(intent_recog);
-                ImageAnalysisActivity.this.finish();
+                payment();
+                vibrator.vibrate(150);
             }
         });
-
-        easy.setOnClickListener(new View.OnClickListener() {
+        Button home = (Button)findViewById(R.id.button_b_home2);
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long[] pattern = {0,700,200,700};
+                Intent intent1 = new Intent(ImageAnalysisActivity.this, HomeActivity.class);
+                long[] pattern = {0,150,50,150};
                 vibrator.vibrate(pattern, -1);
-                ComponentName componentName = new ComponentName("com.kakao.talk","com.kakao.talk.activity.SplashActivity");
-                Intent intent_open = new Intent(Intent.ACTION_MAIN);
-                intent_open.addCategory(Intent.CATEGORY_LAUNCHER);
-                intent_open.setComponent(componentName);
-                tts.speak("이지터치가 열렸습니다.",TextToSpeech.QUEUE_FLUSH,null);
-                startActivity(intent_open);
+                tts.speak("홈으로 이동", TextToSpeech.QUEUE_FLUSH, null);
+                startActivity(intent1);
                 ImageAnalysisActivity.this.finish();
             }
         });
+
         int iWidth   = 520;   // 축소시킬 너비
 
         int iHeight  = 520;   // 축소시킬 높이
@@ -121,6 +119,10 @@ public class ImageAnalysisActivity extends AppCompatActivity {
         float fHeight = srcBmp.getHeight();
 
 
+        if(fWidth == 0 && fHeight == 0){
+            tts.speak("저장된 사진이 없습니다. 앱을 다시 시작해주세요", TextToSpeech.QUEUE_FLUSH, null);
+            ImageAnalysisActivity.this.finish();
+        }
 
 // 원하는 널이보다 클 경우의 설정
 
@@ -240,7 +242,7 @@ public class ImageAnalysisActivity extends AppCompatActivity {
 
                 List<Result> result = ocrresult.getResult();
 
-                String text= "";
+                String text= "분석결과   ";
                 for(int i = 0 ; i < result.size();i++) {
                     Result res = new Result();
                     res = result.get(i);
@@ -248,13 +250,12 @@ public class ImageAnalysisActivity extends AppCompatActivity {
                     for (int j = 0; j < recognitionWords.size(); j++) {
                         String te = recognitionWords.get(j);
                         Log.d("result", te); //te에 결과 저장됨 이거 tts로 읽어주면 됩니다.
-                        text += te;
+                        text = text + te + " ";
                     }
                     tts.speak(text,TextToSpeech.QUEUE_FLUSH,null);
                     view_result.setText(text);
                 }
-
-                tts.speak("볼륨 높임 버튼을 누르면 재인식을 볼륨 낯춤 버튼을 누르면 이지터치로 이동합니다.",TextToSpeech.QUEUE_ADD,null);
+                tts.speak("볼륨 높임 버튼을 누르면 케이비페이로 볼륨낮춤 버튼을 누르면 홈으로 이동합니다.",TextToSpeech.QUEUE_ADD,null);
 
             }
 
@@ -272,25 +273,48 @@ public class ImageAnalysisActivity extends AppCompatActivity {
         AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
         switch (keyCode){
             case KeyEvent.KEYCODE_VOLUME_DOWN:
+                long[] pattern = {0,150,50,150};
+                vibrator.vibrate(pattern, -1);
                 double temp = VolumeNo + 0.15;
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*temp), AudioManager.FLAG_SHOW_UI);
-                ComponentName componentName = new ComponentName("com.kakao.talk","com.kakao.talk.activity.SplashActivity");
-                Intent intent_open = new Intent(Intent.ACTION_MAIN);
-                intent_open.addCategory(Intent.CATEGORY_LAUNCHER);
-                intent_open.setComponent(componentName);
-                tts.speak("이지터치가 열렸습니다.",TextToSpeech.QUEUE_FLUSH,null);
-                startActivity(intent_open);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*temp), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                Intent intent1 = new Intent(ImageAnalysisActivity.this, HomeActivity.class);
+                startActivity(intent1);
+                tts.speak("홈으로 이동", TextToSpeech.QUEUE_FLUSH, null);
                 ImageAnalysisActivity.this.finish();
-                break;
+                return true;
             case KeyEvent.KEYCODE_VOLUME_UP:
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_SHOW_UI);
-                Intent intent_recog = new Intent(ImageAnalysisActivity.this, CameraActivity.class);
-                tts.speak("재인식",TextToSpeech.QUEUE_FLUSH,null);
-                startActivity(intent_recog);
+                vibrator.vibrate(150);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                payment();
                 ImageAnalysisActivity.this.finish();
-                break;
+                return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
+    /////////////////////////////
+    public void payment(){
+
+        PackageManager packageManager = getPackageManager();
+        List<ResolveInfo> apps;
+        Intent intent = new Intent(Intent.ACTION_MAIN, null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        apps = packageManager.queryIntentActivities(intent, 0);
+
+        try{
+            for(int i =0 ; i<apps.size(); i++){
+                if(apps.get(i).activityInfo.packageName.startsWith("com.kbcard.cxh.appcard")){
+                    //tts.speak("케이비페이가 열렸습니다.",TextToSpeech.QUEUE_FLUSH,null);
+                    ComponentName componentName = new ComponentName("com.kbcard.cxh.appcard","com.kbcard.cxh.appcard.screen.payment.PaymentControlActivity");
+                    Intent intent_open = new Intent(Intent.ACTION_MAIN);
+                    intent_open.addCategory(Intent.CATEGORY_LAUNCHER);
+                    intent_open.setComponent(componentName);
+                    startActivity(intent_open);
+
+                }
+            }
+        }catch (Exception e){
+
+        }
+    }
 }

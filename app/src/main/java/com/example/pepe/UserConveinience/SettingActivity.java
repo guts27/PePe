@@ -35,6 +35,7 @@ public class SettingActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Context context;
     Float Speed;
+    AudioManager audioManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,9 @@ public class SettingActivity extends AppCompatActivity {
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
         Speed = PreferenceManager.getFloat(context, "Speed");
 
+        audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+
         intent_setting = new Intent(SettingActivity.this, SettingActivity.class);
 
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -56,6 +60,7 @@ public class SettingActivity extends AppCompatActivity {
                     // 언어를 선택한다.
                     tts.setLanguage(Locale.KOREAN);
                     tts.setSpeechRate(Speed);
+                    tts.speak("설정입니다.", TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
         });
@@ -66,7 +71,6 @@ public class SettingActivity extends AppCompatActivity {
         String result = "";
         Cursor cursor = dbHelper.readRecord();
         while (cursor.moveToNext()) {
-            Log.d("dfdfdfdfdf001", String.valueOf(cursor.getCount()));
             result = cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_PhoneNo))+"/";
             result = result + cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_Volume))+"/";
             result = result + cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_Speed));
@@ -79,35 +83,12 @@ public class SettingActivity extends AppCompatActivity {
         volume.setText(result2[1]);
         final TextView speed = (TextView)findViewById(R.id.textView_speed);
         speed.setText(result2[2]);
-        Button phnstr = (Button)findViewById(R.id.button_phnstr);
         Button plus = (Button)findViewById(R.id.button_plus);
         Button minus = (Button)findViewById(R.id.button_minus);
-        Button volstr = (Button)findViewById(R.id.button_volstr);
         Button plus2 = (Button)findViewById(R.id.button_plus2);
         Button minus2 = (Button)findViewById(R.id.button_minus2);
-        Button spestr = (Button)findViewById(R.id.button_spestr);
+        Button storage = (Button)findViewById(R.id.button_str);
 
-        phnstr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String temp = phone.getText().toString();
-                Log.d("ddd", temp);
-                if(temp!= null){
-                    if(temp.length() == 11){
-                        db.execSQL("update UserInfo set phone = "+"'"+temp+"'");
-                        vibrator.vibrate(1000);
-                        tts.speak("저장되었습니다.", TextToSpeech.QUEUE_FLUSH, null);
-                        Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG);
-                    }else{
-                        tts.speak("잘못 입력하셨습니다.", TextToSpeech.QUEUE_FLUSH, null);
-                        Toast.makeText(getApplicationContext(), "잘못 입력하셨습니다.", Toast.LENGTH_LONG);
-                    }
-                }else{
-                    tts.speak("입력된 내용이 없습니다.", TextToSpeech.QUEUE_FLUSH, null);
-                    Toast.makeText(getApplicationContext(), "입력된 내용이 없습니다.", Toast.LENGTH_LONG);
-                }
-            }
-        });
 
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,20 +112,6 @@ public class SettingActivity extends AppCompatActivity {
                     String tmp = String.valueOf(volNum);
                     volume.setText(tmp);
                 }
-            }
-        });
-
-        volstr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String temp = volume.getText().toString();
-                db.execSQL("update UserInfo set volume = "+"'"+temp+"'");
-                long[] pattern = {0,700,200,700};
-                vibrator.vibrate(pattern, -1);
-                tts.speak("저장되었습니다.", TextToSpeech.QUEUE_FLUSH, null);
-                temp = "0." + temp;
-                PreferenceManager.setFloat(context,"Volume", Float.parseFloat(temp));
-                Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG);
             }
         });
 
@@ -175,28 +142,50 @@ public class SettingActivity extends AppCompatActivity {
         }
     });
 
-        spestr.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String temp = speed.getText().toString();
-            db.execSQL("update UserInfo set speed = "+"'"+temp+"'");
-            long[] pattern = {0,700,200,700,200,700};
-            vibrator.vibrate(pattern, -1);
-            tts.speak("저장되었습니다.", TextToSpeech.QUEUE_FLUSH, null);
-            PreferenceManager.setFloat(context,"Speed", Float.parseFloat(temp));
-            Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG);
-        }
-    });
+        storage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String temp = phone.getText().toString();
+                if(temp!= null){
+                    if(temp.length() == 11){
+                        db.execSQL("update UserInfo set phone = "+"'"+temp+"'");
+                        vibrator.vibrate(1000);
+                    }else{
+                        tts.speak("잘못 입력하셨습니다.", TextToSpeech.QUEUE_FLUSH, null);
+                        Toast.makeText(getApplicationContext(), "잘못 입력하셨습니다.", Toast.LENGTH_LONG);
+                    }
+                }else{
+                    tts.speak("입력된 내용이 없습니다.", TextToSpeech.QUEUE_FLUSH, null);
+                    Toast.makeText(getApplicationContext(), "입력된 내용이 없습니다.", Toast.LENGTH_LONG);
+                }
+
+                String temp1 = volume.getText().toString();
+                db.execSQL("update UserInfo set volume = "+"'"+temp1+"'");
+                temp1 = "0." + temp1;
+                PreferenceManager.setFloat(context,"Volume", Float.parseFloat(temp1));
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+
+                String temp2 = speed.getText().toString();
+                db.execSQL("update UserInfo set speed = "+"'"+temp2+"'");
+                PreferenceManager.setFloat(context,"Speed", Float.parseFloat(temp2));
+                tts.setSpeechRate(Speed);
+
+                tts.speak("저장되었습니다.", TextToSpeech.QUEUE_FLUSH, null);
+                Toast.makeText(getApplicationContext(), "저장되었습니다.", Toast.LENGTH_LONG);
+                long[] pattern1 = {0,300,100,300,100,300};
+                vibrator.vibrate(pattern1, -1);
+                Intent intent_conv = new Intent(SettingActivity.this, ConvenienceActivity.class);
+            }
+        });
 
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:
                 db.close();
                 SettingActivity.this.finish();
-                break;
+                return true;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -206,7 +195,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onResume();
         if(exe ==1) {
             VolumeNo = PreferenceManager.getFloat(context, "Volume");
-            Log.d("resume", String.valueOf(VolumeNo));
+            tts.setSpeechRate(Speed);
         }else{
             exe = 1;
         }

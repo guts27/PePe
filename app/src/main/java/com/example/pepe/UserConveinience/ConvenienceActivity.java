@@ -60,7 +60,8 @@ public class ConvenienceActivity extends AppCompatActivity {
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     double latitude,longitude;
     GestureDetector detector;
-
+    Intent intent_home;
+    Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +70,20 @@ public class ConvenienceActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
-        final Vibrator vibrator = (Vibrator)getSystemService(context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator)getSystemService(context.VIBRATOR_SERVICE);
 
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
         Speed = PreferenceManager.getFloat(context,"Speed");
 
         intent_setting = new Intent(ConvenienceActivity.this, SettingActivity.class);
+        intent_home = new Intent(ConvenienceActivity.this, HomeActivity.class);
+
+        dbHelper = new UserDBHelper(this);
+        Cursor cursor = dbHelper.readRecord();
+        while (cursor.moveToNext()) {
+            String tmp1 = cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_PhoneNo));
+            phoneno += tmp1;
+        }
 
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -83,17 +92,29 @@ public class ConvenienceActivity extends AppCompatActivity {
                     // 언어를 선택한다.
                     tts.setLanguage(Locale.KOREAN);
                     tts.setSpeechRate(Speed);
-                    tts.speak("볼륨 높임 버튼을 누르면 어떠한 기능이 있는지 알 수 있습니다. 원하는 기능을 선택하신 후 볼륨 낮춤 버튼을 누르면 기능이 선택됩니다. 화면의 하단부를 꾹 누르면 홈화면으로 돌아갑니다.", TextToSpeech.QUEUE_FLUSH, null);
+                    //tts.speak("사용자 편의 기능입니다. 원하시는 기능을 선택해 주세요. 저를 누르시면 홈으로 이동합니다.", TextToSpeech.QUEUE_FLUSH, null);
+                    tts.speak("사용자 편의 기능입니다. 볼륨 높임, 어떠한 기능이 있는지 알 수 있습니다. 볼륨 낮춤, 기능이 선택됩니다.", TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
         });
 
+        Button button_b_home = (Button)findViewById(R.id.button_b_home);
+        button_b_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tts.speak("홈으로 이동", TextToSpeech.QUEUE_FLUSH, null);
+                long[] pattern = {0,50,100,250,100,50};
+                vibrator.vibrate(pattern, -1);
+                startActivity(intent_home);
+                ConvenienceActivity.this.finish();
+            }
+        });
         Button button_gpsmms = (Button)findViewById(R.id.button_gpsmms);
         button_gpsmms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vibrator.vibrate(1000);
-                tts.speak("위치보내기", TextToSpeech.QUEUE_FLUSH, null);
+                vibrator.vibrate(150);
+                tts.speak("내 위치보내기", TextToSpeech.QUEUE_FLUSH, null);
                 gpsmms();
             }
         });
@@ -102,7 +123,7 @@ public class ConvenienceActivity extends AppCompatActivity {
         button_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long[] pattern = {0,700,200,700};
+                long[] pattern = {0,150,50,150};
                 vibrator.vibrate(pattern, -1);
                 tts.speak("도우미 호출", TextToSpeech.QUEUE_FLUSH, null);
                 callhelper();
@@ -113,65 +134,14 @@ public class ConvenienceActivity extends AppCompatActivity {
         button_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long[] pattern = {0,700,200,700,200,700};
+                long[] pattern = {0,150,50,150,50,150};
                 vibrator.vibrate(pattern, -1);
-                tts.speak("이동", TextToSpeech.QUEUE_FLUSH, null);
+                tts.speak("설정으로 이동", TextToSpeech.QUEUE_FLUSH, null);
                 startActivity(intent_setting);
             }
         });
 
-        dbHelper = new UserDBHelper(this);
-        Cursor cursor = dbHelper.readRecord();
-        Log.d("dfdfdfdfdf66", String.valueOf(cursor.getCount()));
-        String result = "";
-        while (cursor.moveToNext()) {
-            Log.d("dfdfdfd77", String.valueOf(cursor.getCount()));
-            String tmp1 = cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_PhoneNo));
-            phoneno += tmp1;
-            Log.d("dfdfdfdfdf99", phoneno);
-        }
 
-        detector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent motionEvent) {
-                return false;
-            }
-
-            @Override
-            public void onShowPress(MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent motionEvent) {
-                return false;
-            }
-
-            public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1){
-                return true;
-            }
-            public void onLongPress(MotionEvent motionEvent) {
-                tts.speak("이동", TextToSpeech.QUEUE_FLUSH,null);
-                Intent intent_home = new Intent(ConvenienceActivity.this, HomeActivity.class);
-                startActivity(intent_home);
-                ConvenienceActivity.this.finish();
-            }
-
-            @Override
-            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                return false;
-            }
-
-        });
-
-        View touch_view = (View)findViewById(R.id.view_convenience);
-        touch_view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                detector.onTouchEvent(motionEvent);
-                return false;
-            }
-        });
     }
 
     @Override
@@ -180,17 +150,17 @@ public class ConvenienceActivity extends AppCompatActivity {
         switch (keyCode){
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 double temp = VolumeNo + 0.15;
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*temp), AudioManager.FLAG_SHOW_UI);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*temp), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                 button_selection();
-                break;
+                return true;
             case KeyEvent.KEYCODE_VOLUME_UP:
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_SHOW_UI);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                 count++;
                 if(count == 5){
                     count = 1;
                 }
                 voice_guidance();
-                break;
+                return true;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -207,7 +177,9 @@ public class ConvenienceActivity extends AppCompatActivity {
             case 3:
                 tts.speak("설정",TextToSpeech.QUEUE_FLUSH, null);
                 break;
-
+            case 4:
+                tts.speak("홈화면으로 이동", TextToSpeech.QUEUE_FLUSH, null);
+                break;
         }
 
     }
@@ -215,16 +187,28 @@ public class ConvenienceActivity extends AppCompatActivity {
     public void button_selection(){
         switch (count) {
             case 1:
-                tts.speak("위치보내기.",TextToSpeech.QUEUE_FLUSH, null);
+                vibrator.vibrate(150);
+//                tts.speak("위치가 전송되었습니다.",TextToSpeech.QUEUE_FLUSH, null);
                 gpsmms();
                 break;
             case 2:
+                long[] pattern = {0,150,50,150};
+                vibrator.vibrate(pattern, -1);
                 tts.speak("도우미호출",TextToSpeech.QUEUE_FLUSH, null);
                 callhelper();
                 break;
             case 3:
-                tts.speak("설정",TextToSpeech.QUEUE_FLUSH, null);
+                long[] pattern2 = {0,150,50,150,50,150};
+                vibrator.vibrate(pattern2, -1);
+                tts.speak("이동",TextToSpeech.QUEUE_FLUSH, null);
                 startActivity(intent_setting);
+                break;
+            case 4:
+                long[] pattern3 = {0,100,30,100,30,100,30,100};
+                vibrator.vibrate(pattern3, -1);
+                tts.speak("이동", TextToSpeech.QUEUE_FLUSH,null);
+                startActivity(intent_home);
+                ConvenienceActivity.this.finish();
                 break;
         }
     }
@@ -245,18 +229,14 @@ public class ConvenienceActivity extends AppCompatActivity {
 
             latitude = gpsTracker.getLatitude();
             longitude = gpsTracker.getLongitude();
-            Log.d("TAG11",""+longitude);
 
             String address = getCurrentAddress(latitude, longitude);
-            Log.d("sdsffsd", address);
 
             String sms = address + "에 있습니다.\n"+"[PePe앱을 통해 전송합니다.]";
             try{
-                Log.d("sdsffsd", "dfsdgsfgfsgdsfds");
-
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(phoneno, null, sms, null,null);
-                tts.speak("문자가 전송되었습니다.",TextToSpeech.QUEUE_FLUSH, null);
+                tts.speak("위치가 전송되었습니다.",TextToSpeech.QUEUE_FLUSH, null);
             }catch (Exception e){
 
             }
@@ -476,6 +456,7 @@ public class ConvenienceActivity extends AppCompatActivity {
             intent_call.putExtra("videocall", true);
             intent_call.setData(Uri.parse("tel:" + phoneno));
             startActivity(intent_call);
+
         }else{
             tts.speak("도우미를 호출하기 위해 저장된 전화번호가 없습니다. 설정에서 전화번호 등록후 사용해주세요.",TextToSpeech.QUEUE_FLUSH, null);
         }
@@ -486,9 +467,17 @@ public class ConvenienceActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
+        AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
         Speed = PreferenceManager.getFloat(context, "Speed");
+        tts.setSpeechRate(Speed);
+        Cursor cursor = dbHelper.readRecord();
+        while (cursor.moveToNext()) {
+            String tmp1 = cursor.getString(cursor.getColumnIndexOrThrow(UserInfo.UserInfoEntry.COLUMN_PhoneNo));
+            phoneno = tmp1;
+        }
+        Log.d("010101001", phoneno);
 
-        Log.d("resume", String.valueOf(Speed));
     }
     ///////////////
 }

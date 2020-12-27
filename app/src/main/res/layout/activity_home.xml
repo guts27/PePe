@@ -1,40 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F1C333"
     tools:context=".HomeActivity">
 
-    <Button
-        android:id="@+id/button_recognition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:text="인식"
-        app:layout_constraintBottom_toTopOf="@+id/button_easytouch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_easytouch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이지터치"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/button_recognition"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.371" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="170dp"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_gravity="center"
+            android:src="@drawable/image_pepe" />
 
-    <Button
-        android:id="@+id/button_convenience"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="88dp"
-        android:text="사용자편의기능"
-        app:layout_constraintStart_toStartOf="@+id/button_easytouch"
-        app:layout_constraintTop_toBottomOf="@+id/button_easytouch" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="17dp"
+            android:fontFamily="@font/yanolja"
+            android:textSize="26dp"
+            android:textColor="#002060"
+            android:lineSpacingExtra="20dp"
+            android:text="안녕하세요. 저는 PePe입니다.\n 원하시는 기능을 선택해주세요." />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:src="@drawable/image_icon"
+            android:layout_marginTop="5dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_recognition"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/image_recog"
+            android:layout_marginTop="5dp" />
+
+        <Button
+            android:id="@+id/button_easytouch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/image_easytouch"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/button_convenience"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/conv_image"
+            android:layout_marginBottom="5dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

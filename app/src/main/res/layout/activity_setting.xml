@@ -1,114 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F1C333"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="#555555"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="도우미 전화번호를 입력하세요."
+            android:inputType="phone"
+            android:textColorHint="#555555"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_minus"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:fontFamily="@font/jalnan"
+            android:textColor="#555555"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/textView_volume"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="70dp"
+            android:gravity="center"
+            android:text="70" />
+
+        <Button
+            android:id="@+id/button_plus"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:fontFamily="@font/jalnan"
+            android:textColor="#555555"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="+" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_minus2"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:fontFamily="@font/jalnan"
+            android:textColor="#555555"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/textView_speed"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="70dp"
+            android:gravity="center"
+            android:text="0.0" />
+
+        <Button
+            android:id="@+id/button_plus2"
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:fontFamily="@font/jalnan"
+            android:textColor="#555555"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="+" />
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/button_minus2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="34dp"
-        android:text="Button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button_plus2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_plus2" />
+        android:id="@+id/button_str"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="3"
+        android:background="@drawable/image_storage"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="5dp"/>
 
-    <Button
-        android:id="@+id/button_plus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
-        android:text="+"
-        app:layout_constraintEnd_toStartOf="@+id/button_minus"
-        app:layout_constraintStart_toEndOf="@+id/textView_volume"
-        app:layout_constraintTop_toTopOf="@+id/textView_volume" />
-
-    <Button
-        android:id="@+id/button_phnstr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="61dp"
-        android:layout_marginTop="143dp"
-        android:text="저장"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_volstr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="저장"
-        app:layout_constraintStart_toStartOf="@+id/textView_volume"
-        app:layout_constraintTop_toBottomOf="@+id/textView_volume" />
-
-    <Button
-        android:id="@+id/button_minus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:text="-"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button_plus"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_plus" />
-
-    <TextView
-        android:id="@+id/textView_speed"
-        android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="57dp"
-        android:text="0"
-        app:layout_constraintBottom_toTopOf="@+id/button_spestr"
-        app:layout_constraintEnd_toStartOf="@+id/button_plus2"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button_plus2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="28dp"
-        android:text="Button"
-        app:layout_constraintEnd_toStartOf="@+id/button_minus2"
-        app:layout_constraintStart_toEndOf="@+id/textView_speed"
-        app:layout_constraintTop_toTopOf="@+id/textView_speed" />
-
-    <Button
-        android:id="@+id/button_spestr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="97dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView_speed"
-        app:layout_constraintStart_toStartOf="@+id/textView_speed" />
-
-    <TextView
-        android:id="@+id/textView_volume"
-        android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="53dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="15dp"
-        android:text="70"
-        app:layout_constraintEnd_toStartOf="@+id/button_plus"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_phnstr" />
-
-    <EditText
-        android:id="@+id/editTextPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/button_phnstr"
-        app:layout_constraintStart_toStartOf="@+id/button_phnstr" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

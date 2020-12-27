@@ -17,7 +17,7 @@ public class UserDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(UserInfo.UserInfoEntry.SQL_CREATE_TABLE); // 테이블 생성
+        sqLiteDatabase.execSQL(UserInfo.UserInfoEntry.SQL_CREATE_TABLE);
     }
 
     @Override
@@ -50,12 +50,12 @@ public class UserDBHelper extends SQLiteOpenHelper {
        String sortOrder = UserInfo.UserInfoEntry.COLUMN_Speed + " DESC";
 
         Cursor cursor = db.query(
-                UserInfo.UserInfoEntry.TABLE_NAME,   // The table to query
-                projection,   // The array of columns to return (pass null to get all)
-                null,   // where 문에 필요한 column
-                null,   // where 문에 필요한 value
-                null,   // group by를 적용할 column
-                null,   // having 절
+                UserInfo.UserInfoEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
                 sortOrder
         );
 

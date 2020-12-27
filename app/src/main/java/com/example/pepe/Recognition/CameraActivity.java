@@ -1,7 +1,6 @@
 package com.example.pepe.Recognition;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,7 +19,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -41,7 +39,7 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
     final private static String TAG = "PEPE";
     Context context;
     Float VolumeNo,Speed;
-    Integer count = -1;
+
     //다른 Activity에서 접근할 변수 선언
     public static Context context_main; // context 변수 선언
 
@@ -73,8 +71,8 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
                 if(status != TextToSpeech.ERROR) {
                     // 언어를 선택한다.
                     tts.setLanguage(Locale.KOREAN);
-                    tts.setSpeechRate(1.0f);
-                    tts.speak("사진을 촬영한 후 저장해 주세요. 볼륨 높임 버튼을 누르면 재촬영을 볼륨 낮춤 버튼을 누르면 상품정보를 알려드립니다.",TextToSpeech.QUEUE_FLUSH,null);
+                    tts.setSpeechRate(Speed);
+                    //tts.speak("사진을 촬영한 후 저장해 주세요. 볼륨 높임 버튼을 누르면 재촬영을 볼륨 낮춤 버튼을 누르면 상품정보를 알려드립니다.",TextToSpeech.QUEUE_FLUSH,null);
                     //        tts.speak("상품을 촬영해주세요",TextToSpeech.QUEUE_FLUSH,null);
                     //이걸 사용하면 말하고, QUEUE_FLUSH는 말하는 도중 다른 음성메세지가 시작되면 끊고 말하는 옵션임
                 }
@@ -95,14 +93,12 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
         test.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-
-                long[] pattern = {0,700,200,700};
-                vibrator.vibrate(pattern, -1);
+                vibrator.vibrate(150);
 
                 Intent intent_recognition = new Intent(CameraActivity.this, ImageAnalysisActivity.class);
 
-                intent_recognition.putExtra("img", mCurrentPhotoPath);
-                tts.speak(" ",TextToSpeech.QUEUE_FLUSH, null);
+                intent_recognition.putExtra("imgssss", mCurrentPhotoPath);
+                tts.speak("이동",TextToSpeech.QUEUE_FLUSH, null);
                 startActivity(intent_recognition);
             }
         });
@@ -120,8 +116,10 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.camera_on_button:
-                        vibrator.vibrate(1000);
+                        long[] pattern = {0,150,50,150};
+                        vibrator.vibrate(pattern, -1);
                         dispatchTakePictureIntent();
+                        tts.speak("재촬영합니다.", TextToSpeech.QUEUE_FLUSH, null);
                         break;
                 }
             }
@@ -221,15 +219,18 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
         switch (keyCode){
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 double temp = VolumeNo + 0.15;
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*temp), AudioManager.FLAG_SHOW_UI);
-                Intent intent_recognition = new Intent(CameraActivity.this, ImageAnalysisActivity.class);
-                intent_recognition.putExtra("img", mCurrentPhotoPath);
-                startActivity(intent_recognition);
-                break;
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)* VolumeNo), AudioManager.FLAG_SHOW_UI);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*temp), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                tts.speak("재촬영합니다.",TextToSpeech.QUEUE_FLUSH,null);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)* VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                 dispatchTakePictureIntent();
-                break;
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)* VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                tts.speak("이동",TextToSpeech.QUEUE_FLUSH,null);
+                Intent intent_recognition = new Intent(CameraActivity.this, ImageAnalysisActivity.class);
+                intent_recognition.putExtra("imgssss", mCurrentPhotoPath);
+                startActivity(intent_recognition);
+                return true;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -239,8 +240,9 @@ public class CameraActivity extends AppCompatActivity{ //implements View.OnClick
         super.onResume();
         VolumeNo = PreferenceManager.getFloat(context, "Volume");
         Speed = PreferenceManager.getFloat(context, "Speed");
-
-        Log.d("resume", String.valueOf(VolumeNo));
+        tts.setSpeechRate(Speed);
+        AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)*VolumeNo), AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
     }
     ///////////////
 }

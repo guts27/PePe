@@ -126,8 +126,6 @@ public class GpsTracker extends Service implements LocationListener {
         this.location = location;
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        Log.d("TAG",""+longitude);
-        Log.d("TAG",""+latitude);
     }
 
     @Override

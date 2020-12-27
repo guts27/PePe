@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/camera_on_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="사진촬영"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="632dp"
-        tools:ignore="MissingConstraints" />
+    android:layout_height="match_parent"
+    android:background="#F1C333"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="44dp"
-        tools:layout_editor_absoluteY="101dp"
-        tools:srcCompat="@tools:sample/avatars" />
-
+        android:layout_height="0dp"
+        android:layout_weight="6.4"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/testbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="274dp"
-        android:text="tests"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.8"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/image_ocrresult"/>
+
+    <Button
+        android:id="@+id/camera_on_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.8"
+        android:layout_gravity="center"
+        android:background="@drawable/image_camera"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="10dp"/>
+
+    />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
