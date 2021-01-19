@@ -5,10 +5,15 @@ KB Kookmin Bank Software Competition 3rd Project <br />
 
 Introduction
 --------
-This is an app that aims to help blind people's active consumption. <br />
-1. You can read the product information you want through the product and menu recognition function. <br />
-2. KB pay function helps you make the payment immediately. <br />
-3. User convenience features help for unexpected situations.
+PePe service to help blind people consume actively! <br />
+1. Product and menu recognition function <br />
+Introduction: Ability to read various information based on OCR technology (voice service provided) <br />
+
+2. KB pay feature <br />
+Introduction: Features that help you pay for your selected groceries and food immediately <br />
+
+3. User-friendly features <br />
+Introduction: Features that help you cope with emergencies (Send My Location, Call Helper)
 
 Development Environment
 --------
