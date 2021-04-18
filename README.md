@@ -1,4 +1,4 @@
-PePE
+PePe
 ========
 KB Kookmin Bank Software Competition 3rd Project <br />
 - Demo Video : https://www.youtube.com/watch?v=YaMRiIk1Y4U&t=3s
