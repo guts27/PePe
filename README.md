@@ -15,14 +15,14 @@ Introduction: Features that help you pay for your selected groceries and food im
 3. User-friendly features <br />
 Introduction: Features that help you cope with emergencies (Send My Location, Call Helper)
 
+Android Version
+---------
+- minSdkVersion : Android 7.1.1 (Nougat)
+- targetSdkVersion : Android 11
+
 Development Environment
 --------
 - Android Studio @4.1.1
-
-Application Version
----------
-- minSdkVersion : 25
-- targetSdkVersion : 30
 
 API
 ----------
