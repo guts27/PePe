@@ -5,7 +5,9 @@ KB Kookmin Bank Software Competition 3rd Project <br />
 
 Introduction
 --------
-PePe service to help blind people consume actively! <br />
+• Developed an Android app for the blind people to offer a ‘reading’ and other convenient service using OCR-based Information and TTS Technology.<br />
+• Using this app, a blind can take a photo of a product and convenient services using a volume key and it reads the texts with voice out of the screen.<br />
+
 1. Product and menu recognition function <br />
 Introduction: Ability to read various information based on OCR technology (voice service provided) <br />
 
